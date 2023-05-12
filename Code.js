@@ -21,7 +21,7 @@ function savePDFsToDrive() {
   // Set the email address to filter
   // TODO: maybe just use a query string?
   // "from:mpl5@nyu.edu has:attachment subject:RNP5838796D08BE"
-  var emailAddress = "mpl5@nyu.edu";
+  var emailAddress = "me";
   var printerName = "RNP5838796D08BE";
 
   // Set the name of the Google Drive folder to save the PDFs
