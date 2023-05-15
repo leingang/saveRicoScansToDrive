@@ -17,10 +17,12 @@ To use this script, follow these steps:
 2. Go to the Google Drive folder where you want to save the PDFs.
 3. Click on "New" and select "Google Script".
 4. Copy and paste the above script into the script editor.
-5. Modify the `folderName` and `printerName` variables to suit your specific needs.
+5. Modify the `folderName` and `regex` variables to suit your specific
+    needs. If your printer hosts names are all `RNP` plus 12 hexadecimal digits, you can leave the default in place.
 6. Click on "Run" and select "savePDFsToDrive".
 7. Grant the necessary permissions to the script when prompted.
-8. Wait for the script to finish running. The PDFs will be saved to the specified folder in your Google Drive.
+8. Wait for the script to finish running. The PDFs will be saved to the 
+    specified folder in your Google Drive.
 
 ## Automation
 
@@ -40,7 +42,9 @@ To run the script automatically every five minutes, you can create a time-driven
 6. Review and authorize the permissions required by the script when prompted.
 7. Close the "Triggers" window.
 
-Once the trigger is set up, the `savePDFsToDrive` function will be automatically executed every five minutes. You can modify the interval by editing the trigger you just created in the "Triggers" window.
+Once the trigger is set up, the `savePDFsToDrive` function will be automatically
+executed every five minutes. You can modify the interval by editing the trigger
+you just created in the "Triggers" window.
 
 ## Changelog
 
