@@ -41,3 +41,18 @@ To run the script automatically every five minutes, you can create a time-driven
 7. Close the "Triggers" window.
 
 Once the trigger is set up, the `savePDFsToDrive` function will be automatically executed every five minutes. You can modify the interval by editing the trigger you just created in the "Triggers" window.
+
+## Changelog
+
+### 2023-05-14
+
+* regular expression to read from multiple printers (WIP)
+* refactored to make it easier to read
+
+### 2023-05-12
+
+* Now a GitHub repository
+
+### 2023-05-08
+
+* initial script
