@@ -44,6 +44,10 @@ Once the trigger is set up, the `savePDFsToDrive` function will be automatically
 
 ## Changelog
 
+### 2023-05-15
+
+* Refactored to more idiomatic JavaScript (e.g., `filter` and `forEach` on arrays instead of `for` loops)
+
 ### 2023-05-14
 
 * regular expression to read from multiple printers (WIP)

@@ -1,18 +1,29 @@
 /**
- * MPL: Can you write a Google App Script to save all PDFs attached
- * to emails coming from a specific address to a Google Drive folder?
- *
- * ChatGPT: Yes, I can help you write a Google Apps Script to save all 
- * PDFs attached to emails coming from a specific address to a Google 
- * Drive folder. Here is an example script that you can modify to suit 
- * your specific needs:
+ * Save PDFs sent from Ricoh Multifunction Scanners to Google Drive
  * 
- * 2023-05-12: Now a github repository
- * 
+ * Matthew Leingang and ChatGPT
+ * May 2023
  */
 
 /**
- * Get a folder from Google Drive
+ * The main function
+ */
+function savePDFsToDrive() {
+  var folderName = "Downloads";
+  var regex = /RNP[0-9A-F]{12}/;
+
+  folder = getDriveFolder(folderName);  
+  getThreadsFromPrinter(regex).forEach(
+    function(t) {
+      savePdfsFromThreadToFolder(t,folder);
+      GmailApp.markThreadRead(t).moveThreadToArchive(t);
+    }
+  ); 
+}
+
+/**
+ * Get a folder nameed `folderName` from Google Drive
+ * 
  * Creates the folder if it doesn't already exist.
  * 
  * @param {string} folderName 
@@ -34,63 +45,45 @@ function getDriveFolder(folderName) {
 }
 
 /**
- * Get all the threads that are sent from one of the printers
- * 
- * @param {RegExp} regex
- * @param {Function} callback 
+ * Get all the GMail threads that are sent from a printer matching `regex`
+ *
+ * @param {RegExp} regex - regular expression to match printer hosts
+ * @returns {GmailThread[]} - array of threads
  */
-function findThreadsFromPrinter(regex, callback) {
-  // Get all the threads in the Inbox
-  var threads = GmailApp.search("in:inbox from:me has:attachment");
-  for (var i = 0; i < threads.length; i++) {
-    // Logger.log("Thread: " + i);
-    var thread = threads[i];
-    var subject = thread.getFirstMessageSubject();
-    Logger.log("Subject: " + subject);  
-    var messages = thread.getMessages();
-    if (subject.match(regex)) {
-      callback(thread);
-    }
-  }
+function getThreadsFromPrinter(regex) {
+  threads = GmailApp.search("in:inbox from:me has:attachment");
+  return threads.filter(function (t) {
+      return t.getFirstMessageSubject().match(regex);
+    });
 }
 
 /**
- * 
- * @param {GmailThread} thread 
- * @param {Folder} folder 
+ * Save all PDFs attached to messages in `thread` into `folder`
+ *
+ * @param {GmailThread} thread - the thread to search for attachments
+ * @param {Folder} folder - the folder in which to save them
  */
 function savePdfsFromThreadToFolder(thread,folder) {
   messages = thread.getMessages();
-  for (var j = 0; j < messages.length; j++) {
-    var message = messages[j];        
-    savePdfsFromMessageToFolder(message,folder);
-  }
+  messages.forEach(function (m) {
+    savePdfsFromMessageToFolder(m,folder);
+  });
 }
 
 /**
+ * Save all PDFs attached to `message` into `folder`
  * 
- * @param {Message} message 
- * @param {Folder} folder
+ * @param {Message} message - the message to find attachments 
+ * @param {Folder} folder - the folder in which to save them
  */
 function savePdfsFromMessageToFolder(message,folder) {
   var attachments = message.getAttachments();
-  for (var k = 0; k < attachments.length; k++) {
-    var attachment = attachments[k];
-    if (attachment.getContentType() === "application/pdf") {
-      var file = folder.createFile(attachment);
+  attachments.forEach(function (a) {
+    if (a.getContentType() === "application/pdf") {
+      var file = folder.createFile(a);
       Logger.log("Saved PDF file: " + file.getName());
     }
-  }
-}
-
-
-function savePDFsToDrive() {
-  var folderName = "Downloads";
-  var regex = /RNP[0-9A-F]{12}/;
-
-  folder = getDriveFolder(folderName);  
-  findThreadsFromPrinter(regex, function(t) {
-    savePdfsFromThreadToFolder(t,folder);
-    GmailApp.markThreadRead(t).moveThreadToArchive(t);
   });
 }
+
+
