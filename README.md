@@ -50,7 +50,8 @@ you just created in the "Triggers" window.
 
 ### 2023-05-15
 
-* Refactored to more idiomatic JavaScript (e.g., `filter` and `forEach` on arrays instead of `for` loops)
+* Refactored to more idiomatic JavaScript (e.g., `filter` and `forEach` on
+  arrays instead of `for` loops)
 
 ### 2023-05-14
 
